@@ -1,0 +1,26 @@
+{% extends "core/base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    {% if request.user.is_authenticated %}
+        <p>Вы авторизованы как {{ request.user.username }}</p>
+        <p><a href="logout">Выйти</a></p>
+    {% else %}
+        <h5>Авторизация</h5>
+        {% if logged_status %}
+            <p class="alert alert-info">{{ logged_status }}</p>
+        {% else %}
+            <p>Введите логин и пароль</p>
+        {% endif %}
+
+        <form action="login" method="post">
+        <table>
+            {{ form.as_table }}
+            {% csrf_token %}
+        </table>
+        <p><input class="btn btn-info" type="submit" value="Вход"></p>
+        </form>
+    {% endif %}
+
+{% endblock %}

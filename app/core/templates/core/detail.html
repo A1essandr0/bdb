@@ -1,0 +1,78 @@
+{% extends "core/base.html" %}
+
+{% block title %}{{ record.ISIN }}{% endblock %}
+
+{% block content %}
+    <h5>Данные о выпуске</h5> <!-- Отображаем информацию о выпуске -->
+    <table class="table table-striped table-bordered">
+        <tr><td>ISIN</td><td>{{ record.ISIN }}</td></tr>
+        <tr><td>Company</td><td>{{ record.IssuerCompany}}</td></tr>
+        <tr><td>Country</td><td>{{ record.Country }}</td></tr>
+        <tr><td>Ticker</td><td>{{ record.Ticker }}</td></tr>
+        <tr><td>Moody's rating</td><td>{{ record.Moody }}</td></tr>
+        <tr><td>S&P rating</td><td>{{ record.Sp }}</td></tr>
+        <tr><td>Fitch rating</td><td>{{ record.Fitch }}</td></tr>
+        
+        <tr><td>Coupon<td>{{ record.Coupon }}</td></tr>
+        <tr><td>Currency</td><td>{{ record.Currency }}</td></tr>
+        <tr><td>Maturity date</td><td>{{ record.Maturity }}</td></tr>
+        <tr><td>Maturity type</td><td>{{ record.MaturityType }}</td></tr>
+        <tr><td>Collateral type</td><td>{{ record.CollateralType }}</td></tr>
+
+        <tr><td>Announce date</td><td>{{ record.Announce }}</td></tr>
+        <tr><td>Issue date</td><td>{{ record.IssueDate }}</td></tr>
+        <tr><td>Issued amount</td><td>{{ record.IssuedAmount }}</td></tr>
+        <tr><td>Outstanding amount</td><td>{{ record.OutstandingAmount }}</td></tr>
+        
+    </table>
+
+    
+    <hr>
+    <div class="container">
+        <p>Дополнительная информация</p>
+    </div>
+    
+    <hr>
+    <div class="container pt-3">
+    {% for comment in comments %} <!-- Отображаем комментарии -->
+        <div class="">
+            <p class="font-weight-bold">
+                Комментарий {{ comment.name }} оставлен {{ comment.created }}
+            </p>
+            {{ comment.body|linebreaks }}
+        </div>
+    {% empty %}
+        <p>Комментариев нет</p>
+    {% endfor %}
+    <hr>
+
+    {% if request.user.is_authenticated %}    
+        {% if new_comment %}
+            <div class="alert alert-success">Комментарий добавлен</div>
+            <form action="{{ record.ISIN }}" method="post">
+                <table>
+                    {{ comment_form.as_table }}
+                    {% csrf_token %}
+                </table>
+                <p><input class="btn btn-info" type="submit" value="Запостить"></p>
+            </form>
+
+        {% else %}
+            <strong>Добавить комментарий</strong>
+            <form class="" action="{{ record.ISIN }}" method="post">
+                <table>
+                {{ comment_form.as_table }}
+                {% csrf_token %}
+                </table>
+                <p><input class="btn btn-info" type="submit" value="Запостить"></p>
+            </form>
+        {% endif %}
+        </div>
+    
+    {% else %}
+    Для добавления коментариев необходима авторизация.
+    </div>    
+    
+    {% endif %}
+    
+{% endblock %}
