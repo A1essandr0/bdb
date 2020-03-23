@@ -1,7 +1,7 @@
 FROM python
 
 ENV DJANGO_SETTINGS_MODULE=bond_db.settings.local
-ENV DJANGO_SECRET_KEY=0nvp)2o93(=7f$j5siuu9e$v-w^2_ho7*fpiitfyfuh(*1)v34
+ENV DJANGO_SECRET_KEY=abracadabra
 
 RUN mkdir /apps-conf
 RUN mkdir /apps
